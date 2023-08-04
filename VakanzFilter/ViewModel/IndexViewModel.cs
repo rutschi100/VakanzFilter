@@ -137,12 +137,19 @@ public class IndexViewModel
             from oneFilter in filterList
             let regex = new Regex($".*{oneFilter}.*\n", RegexOptions.IgnoreCase)
             let match = regex.Match(vacancyText)
+            
+            let index = match.Value.IndexOf(oneFilter, StringComparison.OrdinalIgnoreCase)
+            let textBeforeFilter = index >= 0 ? match.Value.Substring(0, index) : string.Empty
+            let textAfterFilter = index >= 0 ? match.Value.Substring(index + oneFilter.Length) : string.Empty
+                                  
             where match.Success
             select new FilterResults
             {
                 Filter = oneFilter,
                 FilterType = filterType,
-                Context = match.Value
+                FullContext = match.Value,
+                TextBeforFilter = textBeforeFilter,
+                TextAfterFilter = textAfterFilter
             }
         );
     }

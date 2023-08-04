@@ -24,7 +24,11 @@
                             {
                                 <li>
                                     <div class="filterResult">@oneFilter.Filter</div>
-                                    <div style="font-style: italic;"> @oneFilter.Context</div>
+                                    <div style="font-style: italic; white-space: normal;">
+                                        @((MarkupString)oneFilter.TextBeforFilter)
+                                        <span class="filterResult">@oneFilter.Filter</span>
+                                        @((MarkupString)oneFilter.TextAfterFilter)
+                                    </div>
                                 </li>
                             }
                         </ol>
@@ -41,7 +45,11 @@
                             {
                                 <li>
                                     <div class="filterResult">@oneFilter.Filter</div>
-                                    <div style="font-style: italic;"> @oneFilter.Context</div>
+                                    <div style="font-style: italic; white-space: normal;">
+                                        @((MarkupString)oneFilter.TextBeforFilter)
+                                        <span class="filterResult">@oneFilter.Filter</span>
+                                        @((MarkupString)oneFilter.TextAfterFilter)
+                                    </div>
                                 </li>
                             }
                         </ol>
@@ -57,7 +65,11 @@
                             {
                                 <li>
                                     <div class="filterResult">@oneFilter.Filter</div>
-                                    <div style="font-style: italic;">@oneFilter.Context</div>
+                                    <div style="font-style: italic; white-space: normal;">
+                                        @((MarkupString)oneFilter.TextBeforFilter)
+                                        <span class="filterResult">@oneFilter.Filter</span>
+                                        @((MarkupString)oneFilter.TextAfterFilter)
+                                    </div>
                                 </li>
                             }
                         </ol>
