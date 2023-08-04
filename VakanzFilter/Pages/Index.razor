@@ -1,148 +1,9 @@
 ﻿@page "/"
+@using VakanzFilter.ViewModel
 @using VakanzFilter.Data
+@inject IndexViewModel IndexViewModel
 
 <PageTitle>Vakanz Filter</PageTitle>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        padding: 20px;
-        background-color: #f5f5f5;
-    }
-    
-    .container {
-        display: flex;
-        justify-content: space-between;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-    }
-    
-    .left,
-    .right {
-        width: 45%;
-    }
-    
-    h1 {
-        margin-bottom: 20px;
-    }
-    
-    textarea {
-        width: 100%;
-        min-height: 200px;
-        margin-bottom: 20px;
-    }
-    
-    button {
-        display: block;
-        width: 100%;
-        padding: 10px;
-        font-size: 18px;
-        margin-bottom: 20px;
-        border: none;
-        border-radius: 5px;
-        color: #fff;
-        cursor: pointer;
-        background-color: #007bff;
-    }
-    
-    button:hover {
-        background-color: #0056b3;
-    }
-    
-    button.add {
-        display: inline-block;
-        width: auto;
-        padding: 5px 10px;
-        font-size: 14px;
-        background-color: #28a745;
-        margin-bottom: 10px;
-    }
-    
-    button.add:hover {
-        background-color: #218838;
-    }
-    
-    button.remove {
-        display: inline-block;
-        width: auto;
-        padding: 5px 10px;
-        font-size: 14px;
-        background-color: #dc3545;
-        margin-left: 10px;
-    }
-    
-    button.remove:hover {
-        background-color: #c82333;
-    }
-    
-    #result {
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        padding: 10px;
-        border-radius: 5px;
-        color: #000;
-    }
-    
-    #context {
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        padding: 10px;
-        border-radius: 5px;
-        background-color: #f5f5f5;
-    }
-    
-    .positive {
-        border-color: #28a745;
-        background-color: #d4edda;
-    }
-    
-    .neutral {
-        border-color: #ffc107;
-        background-color: #ffeeba;
-    }
-    
-    .negative {
-        border-color: #dc3545;
-        background-color: #f8d7da;
-    }
-    
-    #absoluteNoGo,
-    #maybe,
-    #positive {
-        margin-bottom: 20px;
-    }
-    
-    
-    ol {
-        counter-reset: item;
-        list-style-type: none;
-        padding-left: 0;
-    }
-    
-    li {
-        counter-increment: item;
-        margin-bottom: 10px;
-        padding-left: 30px;
-        position: relative;
-    }
-    
-    li:before {
-        content: counter(item);
-        position: absolute;
-        left: 0;
-        font-size: 18px;
-        color: #7f8c8d;
-        background-color: #ecf0f1;
-        height: 25px;
-        width: 25px;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 25px;
-        font-weight: bold;
-    }
-</style>
-
 <div class="container">
     <div class="left">
         <h1>Vakanz Filter</h1>
@@ -155,16 +16,16 @@
         <h1>Filter</h1>
         <div id="absoluteNoGo">
             <h2>Absolutes No-Go</h2>
-            <input type="text" @bind="noGoText"/>
-            <button class="add" @onclick="AddNoGoFilter">Filter hinzufügen</button>
-            @if (Filters.NoGo.Any())
+            <input type="text" @bind="IndexViewModel.noGoText"/>
+            <button class="add" @onclick="() => IndexViewModel.AddFilter(FilterType.NoGo)">Filter hinzufügen</button>
+            @if (IndexViewModel.filters.NoGo.Any())
             {
                 <ol>
-                    @foreach (var oneFilter in Filters.NoGo)
+                    @foreach (var oneFilter in IndexViewModel.filters.NoGo)
                     {
                         <li>
                             @oneFilter
-                            <input type="button" @onclick="() => DeleteFilter(FilterType.NoGo, oneFilter)" value="Entfernen"/>
+                            <input type="button" @onclick="() => IndexViewModel.DeleteFilter(FilterType.NoGo, oneFilter)" value="Entfernen"/>
                         </li>
                     }
                 </ol>
@@ -172,16 +33,16 @@
         </div>
         <div id="maybe">
             <h2>Evtl.</h2>
-            <input type="text" @bind="maybeText"/>
-            <button class="add" @onclick="AddMaybeFilter">Filter hinzufügen</button>
-            @if (Filters.Maybe.Any())
+            <input type="text" @bind="IndexViewModel.maybeText"/>
+            <button class="add" @onclick="() => IndexViewModel.AddFilter(FilterType.Maybe)">Filter hinzufügen</button>
+            @if (IndexViewModel.filters.Maybe.Any())
             {
                 <ol>
-                    @foreach (var oneFilter in Filters.Maybe)
+                    @foreach (var oneFilter in IndexViewModel.filters.Maybe)
                     {
                         <li>
                             @oneFilter
-                            <input type="button" @onclick="() => DeleteFilter(FilterType.Maybe, oneFilter)" value="Entfernen"/>
+                            <input type="button" @onclick="() => IndexViewModel.DeleteFilter(FilterType.Maybe, oneFilter)" value="Entfernen"/>
 
                         </li>
                     }
@@ -190,16 +51,16 @@
         </div>
         <div id="positive">
             <h2>Positive</h2>
-            <input type="text" @bind="goodText"/>
-            <button class="add" @onclick="AddGoodFilter">Filter hinzufügen</button>
-            @if (Filters.Good.Any())
+            <input type="text" @bind="IndexViewModel.goodText"/>
+            <button class="add" @onclick="() => IndexViewModel.AddFilter(FilterType.Good)">Filter hinzufügen</button>
+            @if (IndexViewModel.filters.Good.Any())
             {
                 <ol>
-                    @foreach (var oneFilter in Filters.Good)
+                    @foreach (var oneFilter in IndexViewModel.filters.Good)
                     {
                         <li>
                             @oneFilter
-                            <input type="button" @onclick="() => DeleteFilter(FilterType.Good, oneFilter)" value="Entfernen"/>
+                            <input type="button" @onclick="() => IndexViewModel.DeleteFilter(FilterType.Good, oneFilter)" value="Entfernen"/>
                         </li>
                     }
                 </ol>
@@ -207,55 +68,3 @@
         </div>
     </div>
 </div>
-
-@code {
-
-    private Filters Filters { get; set; } = new();
-
-    private string maybeText = string.Empty;
-    private string goodText = string.Empty;
-    private string noGoText = string.Empty;
-
-    private enum FilterType
-    {
-        NoGo,
-        Maybe,
-        Good
-    }
-
-    private void AddNoGoFilter()
-    {
-        Filters.NoGo.Add(noGoText);
-        noGoText = string.Empty;
-    }
-
-    private void AddMaybeFilter()
-    {
-        Filters.Maybe.Add(maybeText);
-        maybeText = string.Empty;
-    }
-
-    private void AddGoodFilter()
-    {
-        Filters.Good.Add(goodText);
-        goodText = string.Empty;
-    }
-
-    private void DeleteFilter(FilterType filterType, string oneFilter)
-    {
-        switch (filterType)
-        {
-            case FilterType.NoGo:
-                Filters.NoGo.Remove(oneFilter);
-                break;
-            case FilterType.Maybe:
-                Filters.Maybe.Remove(oneFilter);
-                break;
-            case FilterType.Good:
-                Filters.Good.Remove(oneFilter);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(filterType), filterType, null);
-        }
-    }
-}
