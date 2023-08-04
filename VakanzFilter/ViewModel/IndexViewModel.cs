@@ -6,17 +6,9 @@ namespace VakanzFilter.ViewModel;
 
 public class IndexViewModel
 {
-    /*  TODO
-     *  - Durchsuchen von Text
-     *  - Anzeigen von Gefundenen Filtern in dem Resultat bereich
-     *  - Link auf die Filter Wörter setzen
-     *  - Anzeigen von dem Kontext
-     */
-
     private readonly IDataService _dataService;
 
-    public Filters filters { get; set; } = new();
-
+    public Filters filters { get; set; }
     public string maybeText = string.Empty;
     public string goodText = string.Empty;
     public string noGoText = string.Empty;
@@ -26,7 +18,7 @@ public class IndexViewModel
     public IndexViewModel(IDataService dataService)
     {
         _dataService = dataService;
-        filters = _dataService.LoadFilters() ?? new ();
+        filters = _dataService.LoadFilters() ?? new();
     }
 
     public void AddFilter(FilterType filterType)
@@ -34,6 +26,7 @@ public class IndexViewModel
         switch (filterType)
         {
             case FilterType.NoGo:
+                noGoText = noGoText.Trim().ToLower();
                 if (!IsFilterValid(noGoText))
                 {
                     break;
@@ -43,6 +36,7 @@ public class IndexViewModel
                 noGoText = string.Empty;
                 break;
             case FilterType.Maybe:
+                maybeText = maybeText.Trim().ToLower();
                 if (!IsFilterValid(maybeText))
                 {
                     break;
@@ -52,6 +46,7 @@ public class IndexViewModel
                 maybeText = string.Empty;
                 break;
             case FilterType.Good:
+                goodText = goodText.Trim().ToLower();
                 if (!IsFilterValid(goodText))
                 {
                     break;
@@ -63,6 +58,7 @@ public class IndexViewModel
             default:
                 throw new ArgumentOutOfRangeException(nameof(filterType), filterType, null);
         }
+
         _dataService.SaveFilters(filters);
     }
 
@@ -101,29 +97,18 @@ public class IndexViewModel
             default:
                 throw new ArgumentOutOfRangeException(nameof(filterType), filterType, null);
         }
+
         _dataService.SaveFilters(filters);
     }
 
 
     public void ScanVacancyText()
     {
-        //Filter suchen im Text
-        // Gruppieren in Kathegorien
-        var founded = FindAllFilterInText();
-    }
-
-    private List<FilterResults> FindAllFilterInText()
-    {
         scanResults = new List<FilterResults>();
         var filterList = filters.NoGo;
         var filterType = FilterType.NoGo;
 
         FindFilterInText(filterList, filterType, scanResults);
-
-        if (scanResults.Any())
-        {
-            return scanResults;
-        }
 
         filterList = filters.Maybe;
         filterType = FilterType.Maybe;
@@ -134,16 +119,23 @@ public class IndexViewModel
         filterType = FilterType.Good;
 
         FindFilterInText(filterList, filterType, scanResults);
-        return scanResults;
     }
 
-    private void FindFilterInText(List<string> filterList, FilterType filterType, List<FilterResults> founded)
+    private void FindFilterInText(
+        List<string> filterList,
+        FilterType filterType,
+        List<FilterResults> founded
+    )
     {
-        
-        //todo: funktioniert nicht! Neu schreiben.
+        var lastChar = vacancyText[^1];
+        if (lastChar != '\n')
+        {
+            vacancyText += "\n";
+        }
+
         founded.AddRange(
             from oneFilter in filterList
-            let regex = new Regex($"^.*{oneFilter}.*$", RegexOptions.CultureInvariant)
+            let regex = new Regex($".*{oneFilter}.*\n", RegexOptions.IgnoreCase)
             let match = regex.Match(vacancyText)
             where match.Success
             select new FilterResults
@@ -154,5 +146,4 @@ public class IndexViewModel
             }
         );
     }
-    
 }
