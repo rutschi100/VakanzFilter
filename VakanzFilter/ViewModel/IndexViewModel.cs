@@ -1,4 +1,5 @@
-﻿using VakanzFilter.Data;
+﻿using System.Text.RegularExpressions;
+using VakanzFilter.Data;
 using VakanzFilter.Services;
 
 namespace VakanzFilter.ViewModel;
@@ -6,7 +7,6 @@ namespace VakanzFilter.ViewModel;
 public class IndexViewModel
 {
     /*  TODO
-     *  - Speichern von den Filtern
      *  - Durchsuchen von Text
      *  - Anzeigen von Gefundenen Filtern in dem Resultat bereich
      *  - Link auf die Filter Wörter setzen
@@ -20,6 +20,8 @@ public class IndexViewModel
     public string maybeText = string.Empty;
     public string goodText = string.Empty;
     public string noGoText = string.Empty;
+    public string vacancyText = string.Empty;
+    public List<FilterResults> scanResults = new();
 
     public IndexViewModel(IDataService dataService)
     {
@@ -101,4 +103,56 @@ public class IndexViewModel
         }
         _dataService.SaveFilters(filters);
     }
+
+
+    public void ScanVacancyText()
+    {
+        //Filter suchen im Text
+        // Gruppieren in Kathegorien
+        var founded = FindAllFilterInText();
+    }
+
+    private List<FilterResults> FindAllFilterInText()
+    {
+        scanResults = new List<FilterResults>();
+        var filterList = filters.NoGo;
+        var filterType = FilterType.NoGo;
+
+        FindFilterInText(filterList, filterType, scanResults);
+
+        if (scanResults.Any())
+        {
+            return scanResults;
+        }
+
+        filterList = filters.Maybe;
+        filterType = FilterType.Maybe;
+
+        FindFilterInText(filterList, filterType, scanResults);
+
+        filterList = filters.Good;
+        filterType = FilterType.Good;
+
+        FindFilterInText(filterList, filterType, scanResults);
+        return scanResults;
+    }
+
+    private void FindFilterInText(List<string> filterList, FilterType filterType, List<FilterResults> founded)
+    {
+        
+        //todo: funktioniert nicht! Neu schreiben.
+        founded.AddRange(
+            from oneFilter in filterList
+            let regex = new Regex($"^.*{oneFilter}.*$", RegexOptions.CultureInvariant)
+            let match = regex.Match(vacancyText)
+            where match.Success
+            select new FilterResults
+            {
+                Filter = oneFilter,
+                FilterType = filterType,
+                Context = match.Value
+            }
+        );
+    }
+    
 }

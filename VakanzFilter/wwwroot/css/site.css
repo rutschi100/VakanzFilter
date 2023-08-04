@@ -140,7 +140,7 @@ button.remove:hover {
     background-color: #c82333;
 }
 
-#result {
+.result {
     margin-bottom: 20px;
     border: 1px solid #ccc;
     padding: 10px;
@@ -204,4 +204,12 @@ li:before {
     text-align: center;
     line-height: 25px;
     font-weight: bold;
+}
+
+.filterResult{
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #333;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }

@@ -4,13 +4,67 @@
 @inject IndexViewModel IndexViewModel
 
 <PageTitle>Vakanz Filter</PageTitle>
+
+
 <div class="container">
     <div class="left">
         <h1>Vakanz Filter</h1>
-        <textarea id="jobText" placeholder="Fügen Sie hier den Text der Vakanz ein"></textarea>
-        <button id="analyzeButton">Analyse starten</button>
-        <div id="result"></div>
-        <div id="context"></div>
+        <textarea id="jobText" placeholder="Fügen Sie hier den Text der Vakanz ein" @bind="IndexViewModel.vacancyText"></textarea>
+        <button id="analyzeButton" @onclick="() => IndexViewModel.ScanVacancyText()">Analyse starten</button>
+        <div class="result">
+            @if (IndexViewModel.scanResults.Any())
+            {
+                @if (IndexViewModel.scanResults.Any(results => results.FilterType == FilterType.NoGo))
+                {
+                    <div class="result" style="background-color: #dc3545">
+                        <h3>NoGo!</h3>
+                        <ol>
+
+                            @foreach (var oneFilter in IndexViewModel.scanResults.Where(results => results.FilterType == FilterType.NoGo))
+                            {
+                                <li>
+                                    <div class="filterResult">@oneFilter.Filter</div>
+                                    <div style="font-style: italic;"> @oneFilter.Context</div>
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                }
+
+                @if (IndexViewModel.scanResults.Any(results => results.FilterType == FilterType.Maybe))
+                {
+                    <div class="result" style="background-color: #0dcaf0">
+                        <h3>Maybe</h3>
+                        <ol>
+
+                            @foreach (var oneFilter in IndexViewModel.scanResults.Where(results => results.FilterType == FilterType.Maybe))
+                            {
+                                <li>
+                                    <div class="filterResult">@oneFilter.Filter</div>
+                                    <div style="font-style: italic;"> @oneFilter.Context</div>
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                }
+
+                @if (IndexViewModel.scanResults.Any(results => results.FilterType == FilterType.Good))
+                {
+                    <div class="result" style="background-color: forestgreen">
+                        <h3>Good!</h3>
+                        <ol>
+                            @foreach (var oneFilter in IndexViewModel.scanResults.Where(results => results.FilterType == FilterType.Good))
+                            {
+                                <li>
+                                    <div class="filterResult">@oneFilter.Filter</div>
+                                    <div style="font-style: italic;"> @oneFilter.Context</div>
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                }
+            }
+        </div>
     </div>
     <div class="right">
         <h1>Filter</h1>
