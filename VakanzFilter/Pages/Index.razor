@@ -1,0 +1,136 @@
+﻿@page "/"
+@using VakanzFilter.ViewModel
+@using VakanzFilter.Data
+@inject IndexViewModel IndexViewModel
+
+<PageTitle>Vakanz Filter</PageTitle>
+
+
+<div class="container">
+    <div class="left">
+        <h1>Vakanz Filter</h1>
+        <textarea id="jobText" placeholder="Fügen Sie hier den Text der Vakanz ein" @bind="IndexViewModel.vacancyText"></textarea>
+        <button id="analyzeButton" @onclick="() => IndexViewModel.ScanVacancyText()">Analyse starten</button>
+        <div class="result">
+            @if (IndexViewModel.scanResults.Any())
+            {
+                @if (IndexViewModel.scanResults.Any(results => results.FilterType == FilterType.NoGo))
+                {
+                    <div class="result" style="background-color: #dc3545">
+                        <h3>NoGo!</h3>
+                        <ol>
+
+                            @foreach (var oneFilter in IndexViewModel.scanResults.Where(results => results.FilterType == FilterType.NoGo))
+                            {
+                                <li>
+                                    <div class="filterResult">@oneFilter.Filter</div>
+                                    <div style="font-style: italic; white-space: normal;">
+                                        @((MarkupString)oneFilter.TextBeforFilter)
+                                        <span class="filterResult">@oneFilter.Filter</span>
+                                        @((MarkupString)oneFilter.TextAfterFilter)
+                                    </div>
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                }
+
+                @if (IndexViewModel.scanResults.Any(results => results.FilterType == FilterType.Maybe))
+                {
+                    <div class="result" style="background-color: #0dcaf0">
+                        <h3>Maybe</h3>
+                        <ol>
+
+                            @foreach (var oneFilter in IndexViewModel.scanResults.Where(results => results.FilterType == FilterType.Maybe))
+                            {
+                                <li>
+                                    <div class="filterResult">@oneFilter.Filter</div>
+                                    <div style="font-style: italic; white-space: normal;">
+                                        @((MarkupString)oneFilter.TextBeforFilter)
+                                        <span class="filterResult">@oneFilter.Filter</span>
+                                        @((MarkupString)oneFilter.TextAfterFilter)
+                                    </div>
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                }
+
+                @if (IndexViewModel.scanResults.Any(results => results.FilterType == FilterType.Good))
+                {
+                    <div class="result" style="background-color: forestgreen">
+                        <h3>Good!</h3>
+                        <ol>
+                            @foreach (var oneFilter in IndexViewModel.scanResults.Where(results => results.FilterType == FilterType.Good))
+                            {
+                                <li>
+                                    <div class="filterResult">@oneFilter.Filter</div>
+                                    <div style="font-style: italic; white-space: normal;">
+                                        @((MarkupString)oneFilter.TextBeforFilter)
+                                        <span class="filterResult">@oneFilter.Filter</span>
+                                        @((MarkupString)oneFilter.TextAfterFilter)
+                                    </div>
+                                </li>
+                            }
+                        </ol>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <div class="right">
+        <h1>Filter</h1>
+        <div id="absoluteNoGo">
+            <h2>Absolutes No-Go</h2>
+            <input type="text" @bind="IndexViewModel.noGoText"/>
+            <button class="add" @onclick="() => IndexViewModel.AddFilter(FilterType.NoGo)">Filter hinzufügen</button>
+            @if (IndexViewModel.filters.NoGo.Any())
+            {
+                <ol>
+                    @foreach (var oneFilter in IndexViewModel.filters.NoGo)
+                    {
+                        <li>
+                            @oneFilter
+                            <input type="button" @onclick="() => IndexViewModel.DeleteFilter(FilterType.NoGo, oneFilter)" value="Entfernen"/>
+                        </li>
+                    }
+                </ol>
+            }
+        </div>
+        <div id="maybe">
+            <h2>Evtl.</h2>
+            <input type="text" @bind="IndexViewModel.maybeText"/>
+            <button class="add" @onclick="() => IndexViewModel.AddFilter(FilterType.Maybe)">Filter hinzufügen</button>
+            @if (IndexViewModel.filters.Maybe.Any())
+            {
+                <ol>
+                    @foreach (var oneFilter in IndexViewModel.filters.Maybe)
+                    {
+                        <li>
+                            @oneFilter
+                            <input type="button" @onclick="() => IndexViewModel.DeleteFilter(FilterType.Maybe, oneFilter)" value="Entfernen"/>
+
+                        </li>
+                    }
+                </ol>
+            }
+        </div>
+        <div id="positive">
+            <h2>Positive</h2>
+            <input type="text" @bind="IndexViewModel.goodText"/>
+            <button class="add" @onclick="() => IndexViewModel.AddFilter(FilterType.Good)">Filter hinzufügen</button>
+            @if (IndexViewModel.filters.Good.Any())
+            {
+                <ol>
+                    @foreach (var oneFilter in IndexViewModel.filters.Good)
+                    {
+                        <li>
+                            @oneFilter
+                            <input type="button" @onclick="() => IndexViewModel.DeleteFilter(FilterType.Good, oneFilter)" value="Entfernen"/>
+                        </li>
+                    }
+                </ol>
+            }
+        </div>
+    </div>
+</div>
