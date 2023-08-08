@@ -127,6 +127,10 @@ public class IndexViewModel
         List<FilterResults> founded
     )
     {
+        if (string.IsNullOrWhiteSpace(vacancyText))
+        {
+            return;
+        }
         var lastChar = vacancyText[^1];
         if (lastChar != '\n')
         {

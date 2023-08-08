@@ -351,3 +351,5 @@ MigrationBackup/
 .idea/.idea.VakanzFilter/.idea/
 
 .vscode/
+
+VakanzFilter/Filterlist.json
