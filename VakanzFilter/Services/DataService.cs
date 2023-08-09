@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using VakanzFilter.Data;
+using VakanzFilter.Data.Entities;
 
 namespace VakanzFilter.Services;
 

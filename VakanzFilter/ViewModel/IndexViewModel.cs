@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using VakanzFilter.Data;
+using VakanzFilter.Data.Entities;
 using VakanzFilter.Services;
 
 namespace VakanzFilter.ViewModel;

@@ -1,4 +1,4 @@
-﻿namespace VakanzFilter.Data;
+﻿namespace VakanzFilter.Data.Entities;
 
 public class Filters
 {
