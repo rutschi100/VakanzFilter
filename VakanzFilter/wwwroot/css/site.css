@@ -213,3 +213,50 @@ li:before {
     color: #333;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
+
+.button-inline {
+    display: inline-block; /* Überschreibt display: block; */
+    width: auto;           /* Überschreibt width: 100%; */
+    margin-bottom: 0;      /* Überschreibt margin-bottom: 20px; */
+    background-color: transparent; /* Entfernt den blauen Hintergrund */
+    padding: 0;            /* Entfernt das Padding */
+    height: auto;
+}
+
+.button-inline:hover{
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 100%;
+}
+
+/* Allgemeine Stile für h1 bis h3 */
+h1, h2, h3 {
+    font-family: 'Arial', sans-serif; /* Sie können hier auch eine andere Schriftart wie 'Roboto', 'Open Sans' usw. verwenden */
+    font-weight: 300; /* Dünneres Schriftgewicht für ein modernes Aussehen */
+    line-height: 1.2; /* Ein bisschen mehr Zeilenhöhe für bessere Lesbarkeit */
+    margin-bottom: 20px; /* Ein bisschen Abstand nach unten */
+    letter-spacing: 1px; /* Ein bisschen Buchstabenabstand */
+    text-shadow: 4px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Spezifische Stile für h1 */
+h1 {
+    font-size: 2.5em; /* Große Schriftgröße */
+    color: #333; /* Dunkelgrau */
+    margin-top: 0; /* Kein Abstand oben, nützlich, wenn h1 am Anfang einer Seite/ eines Abschnitts steht */
+}
+
+/* Spezifische Stile für h2 */
+h2 {
+    font-size: 1.3em; /* Mittlere Schriftgröße */
+    color: #555; /* Mittelgrau */
+}
+
+h2::before {
+    content: ""; /* Dies ist notwendig, damit das Pseudo-Element angezeigt wird */
+    display: block; /* Damit es sich wie ein Block-Element verhält */
+    height: 0.01em; /* Dicke des Querstrichs */
+    background-color: #333; /* Farbe des Querstrichs */
+    margin-bottom: 10px; /* Abstand zwischen Querstrich und Überschrift */
+}
+
