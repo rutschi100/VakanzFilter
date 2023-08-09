@@ -11,6 +11,7 @@
       <ProjectReference Include="..\VakanzFilter.Data\VakanzFilter.Data.csproj" />
     </ItemGroup>
 
+
 <!--    <ItemGroup>-->
 <!--        <ProjectReference Include="..\VakanzFilter.Data\VakanzFilter.Data.csproj" />-->
 <!--    </ItemGroup>-->
